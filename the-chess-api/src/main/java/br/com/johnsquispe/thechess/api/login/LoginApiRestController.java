@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -45,8 +46,11 @@ public class LoginApiRestController {
             UsuarioAuth usuarioAuth = (UsuarioAuth) authentication.getPrincipal();
             String token = jwtTokenManager.gerarToken(usuarioAuth);
 
-            //TOOD - POR ENQUANTO RETORNANDO O TOKEN PELO BODY DA REQUISIÇÃO, VER A POSSIBILIDADE DE RETORNAR PELO COOKIE (COOKIE MAN)
             return ResponseEntity.ok(new LoginOutput(token));
+
+        } catch (BadCredentialsException e) {
+
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
         } catch (Exception e) {
 

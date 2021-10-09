@@ -13,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -27,7 +28,7 @@ public class UsuarioRestController {
         this.usuarioCadastroService = usuarioCadastroService;
     }
 
-    @GetMapping (Urls.USUARIO)
+    @GetMapping (UsuarioUrls.USUARIO)
     public ResponseEntity<?> listarTodosUsuarios () {
 
         try {
@@ -43,7 +44,7 @@ public class UsuarioRestController {
 
     }
 
-    @PostMapping(Urls.USUARIO)
+    @PostMapping(UsuarioUrls.USUARIO)
     public ResponseEntity<?> criarUsuario (@Valid @RequestBody UsuarioInput usuario, BindingResult bindingResult) {
 
         try {
@@ -52,15 +53,16 @@ public class UsuarioRestController {
                 return ResponseEntity.badRequest().body(ListaFieldErrorTO.of(bindingResult));
             }
 
-            Usuario usuarioParaPersistir = usuario.toUsuario();
+            final Usuario usuarioParaPersistir = usuario.toUsuario();
 
             usuarioCadastroService.salvar(usuarioParaPersistir);
-            
+
+            return ResponseEntity.created(URI.create(UsuarioUrls.USUARIO_DETALHE)).build();
+
         } catch (Exception e) {
             ApplicationLogger.error("Ocorreu um erro ao salvar o cliente", this.getClass(), e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-
-        return ResponseEntity.ok().build();
 
     }
 

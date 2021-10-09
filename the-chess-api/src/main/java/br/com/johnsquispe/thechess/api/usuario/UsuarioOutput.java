@@ -2,15 +2,15 @@ package br.com.johnsquispe.thechess.api.usuario;
 
 import br.com.johnsquispe.thechess.domain.usuario.Usuario;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class UsuarioOutput {
 
     private final String nickname;
     private final String email;
-    private final Date dataCriacao;
+    private final LocalDateTime dataCriacao;
 
-    public UsuarioOutput(String nickname, String email, Date dataCriacao) {
+    public UsuarioOutput(String nickname, String email, LocalDateTime dataCriacao) {
         this.nickname = nickname;
         this.email = email;
         this.dataCriacao = dataCriacao;
@@ -24,7 +24,7 @@ public class UsuarioOutput {
         return email;
     }
 
-    public Date getDataCriacao() {
+    public LocalDateTime getDataCriacao() {
         return dataCriacao;
     }
 

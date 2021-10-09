@@ -22,4 +22,14 @@ public class UsuarioCadastroService {
 
     }
 
+    public Usuario editar (Usuario usuario) {
+
+        if (usuario.getId() == null) {
+            throw new IllegalStateException("Usuário deve estar persistido na base");
+        }
+
+        return this.usuarioRepository.save(usuario);
+    }
+
+
 }
